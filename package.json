@@ -1,0 +1,23 @@
+{
+  "name": "GorillazJS",
+  "version": "0.0.0",
+  "description": "The game of Gorillaz was originally implemented in QBasic and MSDOS. This project implements the game in JS.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "http-server": "*",
+    "socket.io": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jgillham/gorillaz.git"
+  },
+  "keywords": [
+    "Gorillaz"
+  ],
+  "author": "Josh Gillham",
+  "license": "BSD",
+  "readmeFilename": "README.md"
+}
