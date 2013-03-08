@@ -2,16 +2,17 @@
   "name": "GorillazJS",
   "version": "0.0.0",
   "description": "The game of Gorillaz was originally implemented in QBasic and MSDOS. This project implements the game in JS.",
-  "main": "app.js"
+  "main": "app.js",
   "scripts": {
-    "start" : "/usr/local/share/npm/bin/nodemon app.js",
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "http-server": "~0.5.3",
     "socket.io": "~0.9.13",
     "express": "~3.1.0",
-    "jade": "~0.28.2"
+    "jade": "~0.28.2",
+    "nodemon": "~0.7.2"
   },
   "repository": {
     "type": "git",
@@ -20,9 +21,10 @@
   "keywords": [
     "Gorillaz"
   ],
-  "author": 
+  "author": [
     "Josh Gillham",
-   ,
+    "David Viramontes"
+  ],
   "license": "BSD",
   "readmeFilename": "README.md"
 }
