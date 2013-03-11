@@ -11,6 +11,7 @@ var express = require('express')
 
 var app = express();
 
+/* Configure options for node application. */
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
@@ -23,13 +24,16 @@ app.configure(function(){
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
+/* Enable developement mode.*/
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+/* Map addresses to project files. */
 app.get('/', routes.index);
 app.get('/users', user.list);
 
+/* Create server and listen for a connection. */
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
