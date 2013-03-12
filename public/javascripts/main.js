@@ -26,14 +26,17 @@
 	to processing.js object.
 */
 
-var world;
-var b2Vec2;
-var debugDraw;
-var body1;
-var objectCout;
-var box;
-var world_options;
-init(); 
+var world,
+	b2Vec2,
+	debugDraw,
+	body1,
+	objectCout,
+	box,
+	my_rules,
+	gui,
+	gravity_controller;
+
+init();
 
 /*
 			__-DAT.UI.JS-__
@@ -44,12 +47,17 @@ init();
 
 */ 
 
+// options constructor
+
+function world_options(){
+	this.gravity = 10;
+}
+
+
 function createInterface(){
-	world_options = function(){
-		this.gravity  = 10;
-	}
-	var gui = new dat.GUI();
-	// gui.add(world_options.gravity, "Gravity", -10, 10);
+	my_rules = new world_options();
+	gui = new dat.GUI();
+	gravity_controller = gui.add(my_rules, "gravity", -30, 30);
 }
 
 function init(){
@@ -79,7 +87,13 @@ function init(){
 	};
 
 	function createWorld(){
-		var initial_gravity = world_options.gravity || new b2Vec2(0,10);
+		var initial_gravity;
+		if(my_rules.gravity !== undefined){
+			initial_gravity = new b2Vec2(0, my_rules.gravity);
+		}else{
+			initial_gravity = new b2Vec2(0, 10);
+		};
+		
 		world  = new b2World(initial_gravity, true);
 		createGround(world);
 		return world;
@@ -89,7 +103,8 @@ function init(){
 };
 
 
-//  properties for this object with:
+//  define static properties for this object with:
+
 var fixDef = new b2FixtureDef();
 	fixDef.density = 8.0;
 	fixDef.friction = 7.15;
@@ -150,7 +165,7 @@ function sketchProc(p5){
 			createStaticBody(1,0);
 
 			object = new b2BodyDef();
-			object.type = b2Body.b2_dynamicBody;  // define `ect type 
+			object.type = b2Body.b2_dynamicBody;  // define `ect type ?
 			object.position.Set(12, 0);
 
 			world.CreateBody(object).CreateFixture(fixDef);
@@ -202,8 +217,8 @@ function sketchProc(p5){
 	*/
 
 	function pushRight(obj){	
-		var force = new b2Vec2(-200,0);
-		obj.ApplyForce(force, obj.GetWorldCenter());
+		var vec = new b2Vec2(-200,0);
+		obj.ApplyForce(vec, obj.GetWorldCenter());
 	};
 
 	/*
@@ -211,13 +226,27 @@ function sketchProc(p5){
 		----------------
 	*/
 	
+	function world_options_update(value){
+		var newGravity = new b2Vec2(0, value);
+		world.SetGravity(newGravity);
+	};
+
 	function update(){
+		gravity_controller.onChange(function(value){
+			this.onFinishChange(function(value){
+				// alert(value);
+				world_options_update(value);
+			});
+		});
+		
+
 		world.Step(1 / framerate, 10, 10);
 		world.DrawDebugData();
 
 		// TODO: find out how to clear the canvas from boxes
 		// canvas.clearRect( 0 , 0 , p5.width, p5.height );
 		world.ClearForces();
+
 	};
 
 	/*
