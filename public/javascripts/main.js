@@ -76,8 +76,6 @@ var fixDef = new b2FixtureDef();
 
 function createDynamicBody(x,y){
 
-	// objectCount+=1;
-
 	var bodyDef = new b2BodyDef();
 		bodyDef.type = b2Body.b2_dynamicBody;  // define object type 
 		bodyDef.position.Set(x, y);
@@ -137,12 +135,15 @@ function sketchProc(p5){
 		};
 
 		draw = function() {
-			mouseDebug(true);
+			
 			noFill();
 			world.SetDebugDraw(debugDraw);
 			update();
 			rectMode(CENTER);
 			rect(mouseX,mouseY,20,20); 
+		};
+		mouseMoved = function(){
+			mouseDebug(true);
 		};
 
 		keyPressed = function() {
