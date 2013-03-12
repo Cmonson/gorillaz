@@ -5,8 +5,9 @@
 
 /*	
 	Main.js depends Box2DWeb.js and Processing.js
-	Author : @dreamPilot_
+	Author : @dreamPilot_ || David A. Viramontes
     ---------------------------------------------
+
 	Note:
 	Box2DWeb uses Standard Units, meters, kilos, 
 	secs as well as radians for angles.
@@ -14,7 +15,11 @@
 		 *
 	World specs:
 	Gravity: 10 m/s/s 
-	Sleeping :allowed
+	
+	Sleeping :allowed (efficient for mobile devices, does
+	not compute physics when the canvas is out of focus,
+	basically stops rendering)
+
 	Coordinate system : same as processing.js
 
 	For most things a reference to p5 is really a reference 
@@ -27,10 +32,29 @@ var debugDraw;
 var body1;
 var objectCout;
 var box;
-
+var world_options;
 init(); 
 
+/*
+			__-DAT.UI.JS-__
+			---------------
+	OPTIONS: 
+		Press H to show/hide all GUI's
+
+
+*/ 
+
+function createInterface(){
+	world_options = function(){
+		this.gravity  = 10;
+	}
+	var gui = new dat.GUI();
+	// gui.add(world_options.gravity, "Gravity", -10, 10);
+}
+
 function init(){
+
+	createInterface(); 
 
 	b2Vec2 = Box2D.Common.Math.b2Vec2
 	,	b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -55,8 +79,8 @@ function init(){
 	};
 
 	function createWorld(){
-		var gravity =  new b2Vec2(0,10);
-		world  = new b2World(gravity, true);
+		var initial_gravity = world_options.gravity || new b2Vec2(0,10);
+		world  = new b2World(initial_gravity, true);
 		createGround(world);
 		return world;
 	};
@@ -142,8 +166,14 @@ function sketchProc(p5){
 			rectMode(CENTER);
 			rect(mouseX,mouseY,20,20); 
 		};
+	/*
+		EventHandlers for mouse and key tracking
+		TODO: Test processing vs jquery vs other 
+		lib performance for eventHandlers.
+		----------------------------------------
+	*/
 		mouseMoved = function(){
-			mouseDebug(true);
+			mouseDebug(false);
 		};
 
 		keyPressed = function() {
@@ -212,8 +242,8 @@ function sketchProc(p5){
 
 debugDraw.SetSprite( document.getElementById ("world_canvas").getContext("2d"));
 debugDraw.SetDrawScale(30.0);
-debugDraw.SetFillAlpha(0.8);
-debugDraw.SetLineThickness(1.0);
+debugDraw.SetFillAlpha(0.3);
+debugDraw.SetLineThickness(3.0);
 debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
 var canvas = document.getElementById('world_canvas');
 
