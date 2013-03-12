@@ -36,6 +36,8 @@ var world,
 	gui,
 	gravity_controller;
 
+var testSprite = new Image( );
+testSprite.src = "/images/test.jpeg";
 init();
 
 /*
@@ -180,6 +182,7 @@ function sketchProc(p5){
 			update();
 			rectMode(CENTER);
 			rect(mouseX,mouseY,20,20); 
+                        canvas.getContext('2d').drawImage(testSprite, 0, 0 );
 		};
 	/*
 		EventHandlers for mouse and key tracking
